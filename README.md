@@ -4,8 +4,11 @@
 
 ## Usage ##
 ### API ###
+* Python 3.3+
+
 ```py
 from docker_secret import DockerSecret
+
 
 DockerSecret.set("secret-thing", "secret value")
 
