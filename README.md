@@ -1,6 +1,6 @@
 # python-docker-secret
 
-> Small Python module for easily accessing Docker secrets (particularly on Windows)
+> Small Python module for easily accessing Docker secrets (particularly on Windows).
 
 ## Usage
 
@@ -11,7 +11,8 @@
 ```py
 from docker_secret import DockerSecret
 
-
+# Param 1: secret name
+# Param 2: secret value
 DockerSecret.set("secret-thing", "secret value")
 
 # Optional second parameter as fallback, like dict.get()
