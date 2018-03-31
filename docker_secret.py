@@ -53,7 +53,7 @@ class DockerSecret:
         if not os.path.isdir(self.__path):
             os.makedirs(self.__path)
 
-        with open("{}{}".format(self.__path, secret), "xt") as f:
+        with open("{}{}".format(self.__path, secret), "wt") as f:
             f.write(value)
 
 
