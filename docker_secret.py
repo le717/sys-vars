@@ -43,16 +43,12 @@ class DockerSecret:
         @param {String} secret - The name of the Docker secret.
         @param {String} value - The value of the Docker secret.
         """
-        # Ensure only the bare value is written
-        value = value.strip()
-        value = value.replace("'", "")
-        value = value.replace('"', "")
-
         # Create the path if needed
         self = DockerSecret
         if not os.path.isdir(self.__path):
             os.makedirs(self.__path)
 
+        value = value.strip()
         with open("{}{}".format(self.__path, secret), "wt") as f:
             f.write(value)
 
@@ -65,6 +61,7 @@ if __name__ == "__main__":
         secret_name = sys.argv[1]
         secret_value = sys.argv[2]
         DockerSecret.set(secret_name, secret_value)
+        print("Docker secret `{}` successfully created.".format(secret_name))
 
     # We weren't given the information needed
     except IndexError:
