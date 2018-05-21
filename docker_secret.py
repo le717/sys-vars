@@ -12,7 +12,7 @@ Licensed under The MIT License
 import os
 
 
-__all__ = ("DockerSecret")
+__all__ = ["DockerSecret"]
 
 
 class DockerSecret:
