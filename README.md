@@ -1,28 +1,51 @@
-# python-docker-secrets
+# sys_vars
 
-> Easily access Docker secrets.
+> Access system variables in your code as native Python data types.
 
 ## Usage
 
-- Python 3.6+
-- Searches for Docker secret, falls back to environment variables, raises `ValueError` if both fails.
+Requires Python 3.7+
 
-### API
+Prefers Docker secrets over system environment variables. If an alternate
+Docker secrets path from the default Linux location is required,
+set the following key-value in your OS environment:
+`DOCKER_SECRETS_PATH="<directory-path-to-secrets>"`
 
 ```python
-from docker_secrets import get_docker_secret
+import sys_vars
 
-secret = get_docker_secret("SECRET_KEY")
+
+# Returns <class 'str'>
+# Default values can be specified if the key is missing
+sys_vars.get("HOST_ADDRESS", default="localhost")
+
+# Returns <class 'bool'>
+# Default values are supported for casting methods too
+sys_vars.get_bool("DEBUG_MODE", default=False)
+
+# Returns <class 'datetime.datetime'>
+sys_vars.get_datetime("LAST_SYNC_RUN")
+
+# Returns <class 'float'>
+sys_vars.get_float("pi")
+
+# Returns <class 'int'>
+sys_vars.get_int("THE_MEANING_OF_LIFE")
+
+# Returns <class 'dict'> or <class 'list'>
+# Automatically decodes JSON strings into dictionaries/lists
+sys_vars.get_json("CONFIGURED_TERMS")
+
+# Returns <class 'pathlib.Path'>
+sys_vars.get_path("CONFIG_PATH")
 ```
 
-## Backstory
+## Building
 
-As specified in the [Docker secret docs](https://docs.docker.com/engine/swarm/secrets/#windows-support), Docker for Windows and Windows containers have limited support for secrets and stores secrets in plaintext in an [implementation-detail location](https://docs.docker.com/engine/swarm/secrets/#how-docker-manages-secrets). This location is different for Linux containers, which presents a problem of how to cleanly access secrets in a cross-platform manner, especially if developing in a non-containerized Windows environment. The Linux container secrets location, however, is not an implementation detail. Therefore, the stable Linux secrets location can be used to as a cross-platform, cross-environment manner to access secrets while abiding by OS-specific security details (e.g., encrypted on Linux, plaintext on Windows), which is the function of this script.
+1. Install [Poetry](https://python-poetry.org/)
 
-This script was inspired by a function being copy-pasted around in various projects at work as well as an in-house native Windows app to create Docker secrets in the aforementioned manner.
+1. Run `poetry install`
 
-## License
+1. Run `poetry build`
 
-[MIT](LICENSE)
-
-2018 Caleb Ely
+The .whl file will be located at `./dist/sys_vars-<x.y.z>-py3-none-any.whl`
