@@ -4,7 +4,7 @@ from os import environ
 from pathlib import Path
 from typing import Any, Optional, Union
 
-__version__ = "1.0.0"
+__version__ = "3.0.0"
 __all__ = [
     "get",
     "get_bool",
