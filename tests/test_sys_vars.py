@@ -18,7 +18,7 @@ class Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Set an alternative path for Docker secrets for testing
-        environ["DOCKER_SECRETS_PATH"] = "./tests/secrets"
+        environ["SYS_VARS_PATH"] = "./tests/secrets"
 
         # Load the test env values from file and update the enviornment
         load_dotenv(dotenv_path=(Path() / "tests" / ".env").resolve())

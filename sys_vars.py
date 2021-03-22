@@ -19,7 +19,7 @@ __all__ = [
 
 # Allow a developer-defined Docker secrets path,
 # defaulting to the Docker secrets Linux path
-__SECRETS_PATH = Path(environ.get("DOCKER_SECRETS_PATH", "/run/secrets")).resolve()
+__SECRETS_PATH = Path(environ.get("SYS_VARS_PATH", "/run/secrets")).resolve()
 
 
 class SysVarNotFoundError(Exception):

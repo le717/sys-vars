@@ -6,10 +6,10 @@
 
 Requires Python 3.7+
 
-Prefers Docker secrets over system environment variables. If an alternate
-Docker secrets path from the default Linux location is required,
+Prefers the Linux Docker secrets directory over system environment variables.
+If an alternate sys vars path is required,
 set the following key-value in your OS environment:
-`DOCKER_SECRETS_PATH="<directory-path-to-secrets>"`
+`SYS_VARS_PATH="<directory-path-to-vars>"`
 
 ```python
 import sys_vars
@@ -21,6 +21,7 @@ sys_vars.get("HOST_ADDRESS", default="localhost")
 
 # Returns <class 'bool'>
 # Default values are supported for casting methods too
+# Also treats "t", "true", "y", "yes" as True value
 sys_vars.get_bool("DEBUG_MODE", default=False)
 
 # Returns <class 'datetime.datetime'>
