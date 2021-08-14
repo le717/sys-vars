@@ -2,7 +2,7 @@
 name = "sys-vars"
 version = "4.0.1"
 description = "Access system variables in your code as native Python data types."
-authors = ["Caleb Ely <le717@users.noreply.github.com>"]
+authors = ["Caleb <le717@users.noreply.github.com>"]
 license = "MIT"
 readme="README.md"
 repository="https://github.com/le717/sys-vars"
