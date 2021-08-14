@@ -6,7 +6,8 @@
 
 Requires Python 3.7+
 
-Prefers the Linux Docker secrets directory over system environment variables.
+Prefers the Linux Docker secrets directory (`/run/secrets`)
+over system environment variables.
 If an alternate sys vars path is required,
 set the following key-value in your OS environment:
 `SYS_VARS_PATH="<directory-path-to-vars>"`
