@@ -1,4 +1,4 @@
-# sys_vars
+# sys-vars
 
 > Access system variables in your code as native Python data types.
 

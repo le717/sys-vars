@@ -1,9 +1,11 @@
 [tool.poetry]
 name = "sys-vars"
-version = "4.0.0"
+version = "4.0.1"
 description = "Access system variables in your code as native Python data types."
 authors = ["Caleb Ely <le717@users.noreply.github.com>"]
 license = "MIT"
+readme="README.md"
+repository="https://github.com/le717/sys-vars"
 
 [tool.poetry.dependencies]
 python = "^3.7"
