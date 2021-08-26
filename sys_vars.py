@@ -22,6 +22,19 @@ __all__ = [
 __SYS_VARS_PATH = Path(environ.get("SYS_VARS_PATH", "/run/secrets")).resolve()
 
 
+def __from_directory(key: str) -> Optional[str]:
+    """Try to find the variable in a directory."""
+    try:
+        return (__SYS_VARS_PATH / key).read_text().strip() or None
+    except FileNotFoundError:
+        return None
+
+
+def __from_env(key: str) -> Optional[str]:
+    """Try to get the variable from the enviornment."""
+    return environ.get(key)
+
+
 class SysVarNotFoundError(Exception):
     """Custom-defined exception for unlocated system variables.
 
@@ -34,8 +47,8 @@ class SysVarNotFoundError(Exception):
 def get(key: str, *, default: Optional[Any] = None) -> str:
     """Get a system variable value as a str type.
 
-    Check Docker secrets and os.environ for the key,
-    preferring values from Docker secrets. If the key
+    Check the value of SYS_VARS_PATH and os.environ for the key,
+    preferring values from SYS_VARS_PATH. If the key
     is not found and a default value is specified,
     the default value will be returned. Otherwise,
     SysVarNotFoundError will be raised.
@@ -44,27 +57,21 @@ def get(key: str, *, default: Optional[Any] = None) -> str:
     @param default - A default value is the key is not found.
     @return - The system variable value.
     """
-    try:
-        # Try to get a Docker secret value
-        path = __SYS_VARS_PATH / key
-        sys_var_value = path.read_text().strip() or None
+    # First check a directory, falling back to the environment
+    var_value = __from_directory(key)
+    if var_value is None:
+        var_value = __from_env(key)
 
-    # The secret does not exist
-    except FileNotFoundError:
-        # Try to get it from the environment
-        sys_var_value = environ.get(key)
+    # We have a value, send it back
+    if var_value is not None:
+        return var_value.strip()
 
-    # The sys variable could not be loaded at all
-    if sys_var_value is None:
-        # A default value was specified, return it
-        if default is not None:
-            return default
+    # We counldn't find the variable anywhere, try to send back a default value
+    if default is not None:
+        return default
 
-        # No default value was given, raise an exception
-        raise SysVarNotFoundError(f'Could not get value for system variable "{key}"')
-
-    # A value for the key was found!
-    return sys_var_value
+    # No default value was given, so raise an exception
+    raise SysVarNotFoundError(f'Could not get value for system variable "{key}"')
 
 
 def get_bool(key: str, **kwargs: Dict[str, Any]) -> bool:
