@@ -6,7 +6,7 @@ authors = ["Caleb <le717@users.noreply.github.com>"]
 license = "MIT"
 readme="README.md"
 repository="https://github.com/le717/sys-vars"
-include = ["py.typed"]
+include = ["py.typed", "sys_vars.pyi"]
 classifiers = [
     "Typing :: Typed"
 ]
