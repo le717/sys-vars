@@ -1,8 +1,9 @@
-from datetime import datetime
 import json
+from datetime import datetime
 from os import environ
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, Dict, List, Optional, Union
+
 
 __all__ = [
     "get",
@@ -66,7 +67,7 @@ def get(key: str, *, default: Optional[Any] = None) -> str:
     return sys_var_value
 
 
-def get_bool(key: str, **kwargs: dict) -> bool:
+def get_bool(key: str, **kwargs: Dict[str, Any]) -> bool:
     """Get a system variable as a bool object.
 
     See signature of get() for parameter details."""
@@ -91,7 +92,7 @@ def get_bool(key: str, **kwargs: dict) -> bool:
         return bool(sys_val)
 
 
-def get_datetime(key: str, **kwargs: dict) -> datetime:
+def get_datetime(key: str, **kwargs: Dict[str, Any]) -> datetime:
     """Get a system variable as a datetime.datetime object.
 
     The datestring is parsed using datetime.datetime.fromisoformat(),
@@ -110,7 +111,7 @@ def get_datetime(key: str, **kwargs: dict) -> datetime:
     return datetime.fromisoformat(sys_val)
 
 
-def get_float(key: str, **kwargs: dict) -> float:
+def get_float(key: str, **kwargs: Dict[str, Any]) -> float:
     """Get a system variable as a float value.
 
     Raises ValueError if the data cannot be cast.
@@ -119,7 +120,7 @@ def get_float(key: str, **kwargs: dict) -> float:
     return float(get(key, **kwargs))
 
 
-def get_int(key: str, **kwargs: dict) -> int:
+def get_int(key: str, **kwargs: Dict[str, Any]) -> int:
     """Get a system variable as an int value.
 
     Raises ValueError if the data cannot be cast.
@@ -128,7 +129,7 @@ def get_int(key: str, **kwargs: dict) -> int:
     return int(get(key, **kwargs))
 
 
-def get_json(key: str, **kwargs: dict) -> Union[dict, list]:
+def get_json(key: str, **kwargs: Dict[str, Any]) -> Union[Dict[str, Any], List[Any]]:
     """Get a JSON string system variable as a dictionary object.
 
     Unlike the other methods whose names suggest the return data type
@@ -151,7 +152,7 @@ def get_json(key: str, **kwargs: dict) -> Union[dict, list]:
     return json.loads(sys_val)
 
 
-def get_path(key: str, **kwargs: dict) -> Path:
+def get_path(key: str, **kwargs: Dict[str, Any]) -> Path:
     """Get a file path string system variable as a pathlib.Path instance.
 
     See signature of get() for parameter details."""
