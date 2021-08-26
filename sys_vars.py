@@ -17,9 +17,9 @@ __all__ = [
 ]
 
 
-# Allow a developer-defined Docker secrets path,
+# Allow a developer-defined Docker sys vars path,
 # defaulting to the Docker secrets Linux path
-__SECRETS_PATH = Path(environ.get("SYS_VARS_PATH", "/run/secrets")).resolve()
+__SYS_VARS_PATH = Path(environ.get("SYS_VARS_PATH", "/run/secrets")).resolve()
 
 
 class SysVarNotFoundError(Exception):
@@ -46,7 +46,7 @@ def get(key: str, *, default: Optional[Any] = None) -> str:
     """
     try:
         # Try to get a Docker secret value
-        path = __SECRETS_PATH / key
+        path = __SYS_VARS_PATH / key
         sys_var_value = path.read_text().strip() or None
 
     # The secret does not exist
