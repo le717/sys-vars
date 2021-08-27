@@ -2,7 +2,9 @@ import json
 from datetime import datetime
 from os import environ
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, OrderedDict, Union
+
+import dotenv
 
 
 __all__ = [
@@ -17,9 +19,13 @@ __all__ = [
 ]
 
 
-# Allow a developer-defined Docker sys vars path,
+# Allow a developer-defined sys vars path,
 # defaulting to the Docker secrets Linux path
 __SYS_VARS_PATH = Path(environ.get("SYS_VARS_PATH", "/run/secrets")).resolve()
+
+# Load the contents of a .dotenv file.
+# It's OK if it doesn't exist
+__DOT_ENV_CONTENT: OrderedDict = dotenv.dotenv_values()
 
 
 def __from_directory(key: str) -> Optional[str]:
@@ -33,6 +39,11 @@ def __from_directory(key: str) -> Optional[str]:
 def __from_env(key: str) -> Optional[str]:
     """Try to get the variable from the enviornment."""
     return environ.get(key)
+
+
+def __from_env_file(key) -> Optional[str]:
+    """Try to get the variable from a .env file."""
+    return __DOT_ENV_CONTENT.get(key)
 
 
 class SysVarNotFoundError(Exception):
@@ -61,6 +72,8 @@ def get(key: str, *, default: Optional[Any] = None) -> str:
     var_value = __from_directory(key)
     if var_value is None:
         var_value = __from_env(key)
+    if var_value is None:
+        var_value = __from_env_file(key)
 
     # We have a value, send it back
     if var_value is not None:
