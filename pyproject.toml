@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sys-vars"
-version = "4.0.2"
+version = "4.0.3"
 description = "Access system variables in your code as native Python data types."
 authors = ["Caleb <le717@users.noreply.github.com>"]
 license = "MIT"
@@ -13,10 +13,11 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
+python-dotenv = "^0.19.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9"
-python-dotenv = "^0.15.0"
+python-dotenv = "^0.19.0"
 black = "^20.8b1"
 mypy = "^0.910"
 
