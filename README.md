@@ -6,11 +6,15 @@
 
 Requires Python 3.7+
 
-Prefers the Linux Docker secrets directory (`/run/secrets`)
-over system environment variables.
-If an alternate sys vars path is required,
-set the following key-value in your OS environment:
-`SYS_VARS_PATH="<directory-path-to-vars>"`
+Load system variables for used in applications as secrets, variables,
+and other related contexts as native Python data types. Searches for
+a file in `SYS_VARS_PATH`, falling back to `os.enviorn`, and finally
+checking the contents of a `.env` file also located in `SYS_VARS_PATH`.
+
+By default, `SYS_VARS_PATH` the Linux Docker secrets directory
+(`/run/secrets`). If an alternate path is required, set the value
+of `SYS_VARS_PATH` in your OS environment before app start.
+
 
 ```python
 import sys_vars
@@ -45,9 +49,9 @@ sys_vars.get_path("CONFIG_PATH")
 ## Building
 
 1. Install [Poetry](https://python-poetry.org/)
-
 1. Run `poetry install`
-
 1. Run `poetry build`
+1. Tests can be run via the provided VS Code test runner config.
 
-The .whl file will be located at `./dist/sys_vars-<x.y.z>-py3-none-any.whl`
+The resuting `.whl` file will be located at
+`./dist/sys_vars-<x.y.z>-py3-none-any.whl`
