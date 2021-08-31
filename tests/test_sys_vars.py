@@ -4,42 +4,35 @@ from os import environ
 from pathlib import Path
 import unittest
 
-from dotenv import load_dotenv
 import sys_vars
-
-
-DockerSecretTestVals = {
-    "DOCKER_SECRET": "Topeka Bodega",
-    "DEFAUT_VAL": "this-is-the-default",
-}
 
 
 class Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # Set an alternative path for Docker secrets for testing
+        # Set an alternative path for sys vars for testing
         environ["SYS_VARS_PATH"] = "./tests/secrets"
 
-        # Load the test env values from file and update the enviornment
-        load_dotenv(dotenv_path=(Path() / "tests" / ".env").resolve())
+        # Put a value in the enviornment
+        environ["DEPLOY_ENV"] = "development"
 
-        # Because the library sets the Docker secrets path at compile time,
+        # Because the library sets the sys vars path at compile time,
         # we need to reload it to pick up the path change
         reload(sys_vars)
 
-    def test_not_found_docker_secret_w_default(self):
+    def test_not_found_sys_var_w_default(self):
         val = sys_vars.get(
             "NON_EXISTENT_SYSTEM_VARIABLE", default="this-is-the-default"
         )
-        self.assertEqual(val, DockerSecretTestVals["DEFAUT_VAL"])
+        self.assertEqual(val, "this-is-the-default")
 
     def test_not_found_sys_var_wo_default(self):
         with self.assertRaises(sys_vars.SysVarNotFoundError):
             sys_vars.get("NON_EXISTENT_SYSTEM_VARIABLE")
 
-    def test_get_docker_secret(self):
-        val = sys_vars.get("DOCKER_SECRET")
-        self.assertEqual(val, DockerSecretTestVals["DOCKER_SECRET"])
+    def test_get_sys_var(self):
+        val = sys_vars.get("DEPLOY_ENV")
+        self.assertEqual(val, "development")
 
     def test_get_str(self):
         val = sys_vars.get("HOST_ADDRESS")
