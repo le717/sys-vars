@@ -9,7 +9,7 @@ Requires Python 3.7+
 Load system variables for used in applications as secrets, variables,
 and other related contexts as native Python data types. Searches for
 a file in `SYS_VARS_PATH`, falling back to `os.enviorn`, and finally
-checking the contents of a `.env` file also located in `SYS_VARS_PATH`.
+checking the contents of a `.env` file located in `SYS_VARS_PATH`.
 
 By default, `SYS_VARS_PATH` the Linux Docker secrets directory
 (`/run/secrets`). If an alternate path is required, set the value
