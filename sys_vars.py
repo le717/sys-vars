@@ -23,9 +23,9 @@ __all__ = [
 # defaulting to the Docker secrets Linux path
 __SYS_VARS_PATH = Path(environ.get("SYS_VARS_PATH", "/run/secrets")).resolve()
 
-# Load the contents of a .dotenv file.
+# Load the contents of a .env file.
 # It's OK if it doesn't exist
-__DOT_ENV_CONTENT: OrderedDict = dotenv.dotenv_values()
+__DOT_ENV_CONTENT: OrderedDict = dotenv.dotenv_values(__SYS_VARS_PATH / ".env")
 
 
 def __from_directory(key: str) -> Optional[str]:
