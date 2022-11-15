@@ -45,7 +45,7 @@ class SysVarNotFoundError(Exception):
 try:
     __SYS_VARS_PATH = Path(environ["SYS_VARS_PATH"]).resolve()
 except KeyError:
-    raise SysVarNotFoundError(
+    raise KeyError(
         "`SYS_VARS_PATH` could not be found in the current environment."
     ) from None
 
