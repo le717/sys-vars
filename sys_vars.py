@@ -19,6 +19,16 @@ __all__ = [
 ]
 
 
+class SysVarNotFoundError(Exception):
+    """Custom-defined exception for unlocated system variables.
+
+    Any time a system variable cannot be found in Docker secrets
+    or os.environ, this Exception is raised."""
+
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+
+
 # Allow a developer-defined sys vars path,
 # defaulting to the Docker secrets Linux path
 __SYS_VARS_PATH = Path(environ.get("SYS_VARS_PATH", "/run/secrets")).resolve()
@@ -37,22 +47,13 @@ def __from_directory(key: str) -> Optional[str]:
 
 
 def __from_env(key: str) -> Optional[str]:
-    """Try to get the variable from the enviornment."""
+    """Try to get the variable from the environment."""
     return environ.get(key)
 
 
 def __from_env_file(key) -> Optional[str]:
     """Try to get the variable from a .env file."""
     return __DOT_ENV_CONTENT.get(key)
-
-
-class SysVarNotFoundError(Exception):
-    """Custom-defined exception for unlocated system variables.
-
-    Any time a system variable cannot be found in Docker secrets
-    or os.environ, this Exception is raised."""
-
-    pass
 
 
 def get(key: str, *, default: Optional[Any] = None) -> str:
@@ -79,7 +80,7 @@ def get(key: str, *, default: Optional[Any] = None) -> str:
     if var_value is not None:
         return var_value.strip()
 
-    # We counldn't find the variable anywhere, try to send back a default value
+    # We couldn't find the variable anywhere, try to send back a default value
     if default is not None:
         return default
 
