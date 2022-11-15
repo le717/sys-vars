@@ -33,12 +33,8 @@ class SysVarNotFoundError(Exception):
 
         # Provide some extra information about the exception
         self.var_key: str = kwargs.pop("key", "")
-        self.var_type: str = ""
-        self.var_path: str = (
-            fspath(globals()["__SYS_VARS_PATH"])
-            if "__SYS_VARS_PATH" in globals()
-            else ""
-        )
+        self.var_type: str = kwargs.pop("type", "")
+        self.var_path: str = fspath(globals()["__SYS_VARS_PATH"])
 
 
 # Get the defined sys vars path from the environment
@@ -72,7 +68,7 @@ def __from_env_file(key: str, /) -> Optional[str]:
     return __DOT_ENV_CONTENT.get(key)
 
 
-def get(key: str, /, *, default: Optional[Any] = None) -> str:
+def get(key: str, /, *, default: Optional[Any] = None, **kwargs: Dict[str, str]) -> str:
     """Get a system variable value as a str type.
 
     Check the value of SYS_VARS_PATH and os.environ for the key,
@@ -102,7 +98,9 @@ def get(key: str, /, *, default: Optional[Any] = None) -> str:
 
     # No default value was given, so raise an exception
     raise SysVarNotFoundError(
-        f'Could not get value for system variable "{key}"', key=key
+        f'Could not get value for system variable "{key}"',
+        key=key,
+        type=kwargs.pop("var_type", "str"),
     )
 
 
@@ -111,7 +109,7 @@ def get_bool(key: str, /, **kwargs: Dict[str, Any]) -> bool:
 
     See signature of get() for parameter details."""
     # Start by getting the system value
-    sys_val = get(key, **kwargs)
+    sys_val = get(key, var_type="bool", **kwargs)
 
     # We have an actual boolean data type
     # (most likely a specified default value).
@@ -141,7 +139,7 @@ def get_datetime(key: str, /, **kwargs: Dict[str, Any]) -> datetime:
     Raises ValueError if the data cannot be cast.
 
     See signature of get() for parameter details."""
-    sys_val = get(key, **kwargs)
+    sys_val = get(key, var_type="datetime", **kwargs)
 
     # We have an actual datetime obj (most likely a default val)
     # There's nothing more to do
@@ -156,7 +154,7 @@ def get_float(key: str, /, **kwargs: Dict[str, Any]) -> float:
     Raises ValueError if the data cannot be cast.
 
     See signature of get() for parameter details."""
-    return float(get(key, **kwargs))
+    return float(get(key, var_type="float", **kwargs))
 
 
 def get_int(key: str, /, **kwargs: Dict[str, Any]) -> int:
@@ -165,7 +163,7 @@ def get_int(key: str, /, **kwargs: Dict[str, Any]) -> int:
     Raises ValueError if the data cannot be cast.
 
     See signature of get() for parameter details."""
-    return int(get(key, **kwargs))
+    return int(get(key, var_type="int", **kwargs))
 
 
 def get_json(key: str, /, **kwargs: Dict[str, Any]) -> Union[Dict[str, Any], List[Any]]:
@@ -181,7 +179,7 @@ def get_json(key: str, /, **kwargs: Dict[str, Any]) -> Union[Dict[str, Any], Lis
     Raises json.JSONDecodeError if the JSON data cannot be decoded.
 
     See signature of get() for parameter details."""
-    sys_val = get(key, **kwargs)
+    sys_val = get(key, var_type="json", **kwargs)
 
     # We have a dictionary or list (most likely a default val)
     # There's nothing more to do
@@ -195,4 +193,4 @@ def get_path(key: str, /, **kwargs: Dict[str, Any]) -> Path:
     """Get a file path string system variable as a pathlib.Path instance.
 
     See signature of get() for parameter details."""
-    return Path(get(key, **kwargs))
+    return Path(get(key, var_type="path", **kwargs))
