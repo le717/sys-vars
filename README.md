@@ -4,7 +4,7 @@
 
 ## Usage
 
-Requires Python 3.7+
+Requires Python 3.8+
 
 Load system variables for used in applications as secrets, variables,
 and other related contexts as native Python data types. Searches for
