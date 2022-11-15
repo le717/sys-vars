@@ -48,10 +48,10 @@ sys_vars.get_path("CONFIG_PATH")
 
 ## Building
 
-1. Install [Poetry](https://python-poetry.org/)
+1. Install [Poetry](https://python-poetry.org/) 1.2.0+
 1. Run `poetry install`
 1. Run `poetry build`
 1. Tests can be run via the provided VS Code test runner config.
 
-The resuting `.whl` file will be located at
+The resulting `.whl` file will be located at
 `./dist/sys_vars-<x.y.z>-py3-none-any.whl`
