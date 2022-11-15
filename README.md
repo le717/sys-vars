@@ -12,8 +12,7 @@ a file in `SYS_VARS_PATH`, falling back to `os.enviorn`, and finally
 checking the contents of a `.env` file located in `SYS_VARS_PATH`.
 
 `SYS_VARS_PATH` must be a defined OS environment variable that is set
-before app start. If it is not found, a `sys_vars.SysVarNotFoundError`
-exception will be raised.
+before app start. If it is not found, a `KeyError` exception will be raised.
 
 
 ```python
