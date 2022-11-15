@@ -1,10 +1,7 @@
 from datetime import datetime
-from importlib import reload
 from os import environ
 from pathlib import Path
 import unittest
-
-import sys_vars
 
 
 class Tests(unittest.TestCase):
@@ -13,12 +10,13 @@ class Tests(unittest.TestCase):
         # Set an alternative path for sys vars for testing
         environ["SYS_VARS_PATH"] = "./tests/secrets"
 
-        # Put a value in the enviornment
+        # Put a value in the environment
         environ["DEPLOY_ENV"] = "development"
 
         # Because the library sets the sys vars path at compile time,
-        # we need to reload it to pick up the path change
-        reload(sys_vars)
+        # we need to import it here and make it a global variable
+        global sys_vars
+        import sys_vars
 
     def test_not_found_sys_var_w_default(self):
         val = sys_vars.get(
