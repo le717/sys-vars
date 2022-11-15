@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from os import environ
+from os import environ, fspath
 from pathlib import Path
 from typing import Any, Dict, List, Optional, OrderedDict, Union
 
@@ -20,13 +20,25 @@ __all__ = [
 
 
 class SysVarNotFoundError(Exception):
-    """Custom-defined exception for unlocated system variables.
+    """A system variable was not found at `SYS_VARS_PATH`.
 
-    Any time a system variable cannot be found in Docker secrets
-    or os.environ, this Exception is raised."""
+    Additional information about the exception may be available:
+    - `var_name: str`
+    - `var_type: str`
+    - `var_path: str`
+    """
 
-    def __init__(self, *args: object) -> None:
-        super().__init__(*args)
+    def __init__(self, *args: object, **kwargs: object) -> None:
+        super().__init__(*args, **kwargs)
+
+        # Provide some extra information about the exception
+        self.var_name: str = ""
+        self.var_type: str = ""
+        self.var_path: str = (
+            fspath(globals()["__SYS_VARS_PATH"])
+            if "__SYS_VARS_PATH" in globals()
+            else ""
+        )
 
 
 # Get the defined sys vars path from the environment
