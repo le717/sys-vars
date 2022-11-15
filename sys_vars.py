@@ -54,7 +54,7 @@ except KeyError:
 __DOT_ENV_CONTENT: OrderedDict = dotenv.dotenv_values(__SYS_VARS_PATH / ".env")
 
 
-def __from_directory(key: str) -> Optional[str]:
+def __from_directory(key: str, /) -> Optional[str]:
     """Try to find the variable in a directory."""
     try:
         return (__SYS_VARS_PATH / key).read_text().strip() or None
@@ -62,17 +62,17 @@ def __from_directory(key: str) -> Optional[str]:
         return None
 
 
-def __from_env(key: str) -> Optional[str]:
+def __from_env(key: str, /) -> Optional[str]:
     """Try to get the variable from the environment."""
     return environ.get(key)
 
 
-def __from_env_file(key) -> Optional[str]:
+def __from_env_file(key: str, /) -> Optional[str]:
     """Try to get the variable from a .env file."""
     return __DOT_ENV_CONTENT.get(key)
 
 
-def get(key: str, *, default: Optional[Any] = None) -> str:
+def get(key: str, /, *, default: Optional[Any] = None) -> str:
     """Get a system variable value as a str type.
 
     Check the value of SYS_VARS_PATH and os.environ for the key,
@@ -104,7 +104,7 @@ def get(key: str, *, default: Optional[Any] = None) -> str:
     raise SysVarNotFoundError(f'Could not get value for system variable "{key}"')
 
 
-def get_bool(key: str, **kwargs: Dict[str, Any]) -> bool:
+def get_bool(key: str, /, **kwargs: Dict[str, Any]) -> bool:
     """Get a system variable as a bool object.
 
     See signature of get() for parameter details."""
@@ -129,7 +129,7 @@ def get_bool(key: str, **kwargs: Dict[str, Any]) -> bool:
         return bool(sys_val)
 
 
-def get_datetime(key: str, **kwargs: Dict[str, Any]) -> datetime:
+def get_datetime(key: str, /, **kwargs: Dict[str, Any]) -> datetime:
     """Get a system variable as a datetime.datetime object.
 
     The datestring is parsed using datetime.datetime.fromisoformat(),
@@ -148,7 +148,7 @@ def get_datetime(key: str, **kwargs: Dict[str, Any]) -> datetime:
     return datetime.fromisoformat(sys_val)
 
 
-def get_float(key: str, **kwargs: Dict[str, Any]) -> float:
+def get_float(key: str, /, **kwargs: Dict[str, Any]) -> float:
     """Get a system variable as a float value.
 
     Raises ValueError if the data cannot be cast.
@@ -157,7 +157,7 @@ def get_float(key: str, **kwargs: Dict[str, Any]) -> float:
     return float(get(key, **kwargs))
 
 
-def get_int(key: str, **kwargs: Dict[str, Any]) -> int:
+def get_int(key: str, /, **kwargs: Dict[str, Any]) -> int:
     """Get a system variable as an int value.
 
     Raises ValueError if the data cannot be cast.
@@ -166,7 +166,7 @@ def get_int(key: str, **kwargs: Dict[str, Any]) -> int:
     return int(get(key, **kwargs))
 
 
-def get_json(key: str, **kwargs: Dict[str, Any]) -> Union[Dict[str, Any], List[Any]]:
+def get_json(key: str, /, **kwargs: Dict[str, Any]) -> Union[Dict[str, Any], List[Any]]:
     """Get a JSON string system variable as a dictionary object.
 
     Unlike the other methods whose names suggest the return data type
@@ -189,7 +189,7 @@ def get_json(key: str, **kwargs: Dict[str, Any]) -> Union[Dict[str, Any], List[A
     return json.loads(sys_val)
 
 
-def get_path(key: str, **kwargs: Dict[str, Any]) -> Path:
+def get_path(key: str, /, **kwargs: Dict[str, Any]) -> Path:
     """Get a file path string system variable as a pathlib.Path instance.
 
     See signature of get() for parameter details."""
