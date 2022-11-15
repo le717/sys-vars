@@ -23,16 +23,16 @@ class SysVarNotFoundError(Exception):
     """A system variable was not found at `SYS_VARS_PATH`.
 
     Additional information about the exception may be available:
-    - `var_name: str`
+    - `var_key: str`
     - `var_type: str`
     - `var_path: str`
     """
 
-    def __init__(self, *args: object, **kwargs: object) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args: object, **kwargs: Dict[str, str]) -> None:
+        super().__init__(*args)
 
         # Provide some extra information about the exception
-        self.var_name: str = ""
+        self.var_key: str = kwargs.pop("key", "")
         self.var_type: str = ""
         self.var_path: str = (
             fspath(globals()["__SYS_VARS_PATH"])
@@ -101,7 +101,9 @@ def get(key: str, /, *, default: Optional[Any] = None) -> str:
         return default
 
     # No default value was given, so raise an exception
-    raise SysVarNotFoundError(f'Could not get value for system variable "{key}"')
+    raise SysVarNotFoundError(
+        f'Could not get value for system variable "{key}"', key=key
+    )
 
 
 def get_bool(key: str, /, **kwargs: Dict[str, Any]) -> bool:
