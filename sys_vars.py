@@ -29,9 +29,13 @@ class SysVarNotFoundError(Exception):
         super().__init__(*args)
 
 
-# Allow a developer-defined sys vars path,
-# defaulting to the Docker secrets Linux path
-__SYS_VARS_PATH = Path(environ.get("SYS_VARS_PATH", "/run/secrets")).resolve()
+# Get the defined sys vars path from the environment
+try:
+    __SYS_VARS_PATH = Path(environ["SYS_VARS_PATH"]).resolve()
+except KeyError:
+    raise SysVarNotFoundError(
+        "`SYS_VARS_PATH` could not be found in the current environment."
+    ) from None
 
 # Load the contents of a .env file.
 # It's OK if it doesn't exist

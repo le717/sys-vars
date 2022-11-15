@@ -11,9 +11,9 @@ and other related contexts as native Python data types. Searches for
 a file in `SYS_VARS_PATH`, falling back to `os.enviorn`, and finally
 checking the contents of a `.env` file located in `SYS_VARS_PATH`.
 
-By default, `SYS_VARS_PATH` the Linux Docker secrets directory
-(`/run/secrets`). If an alternate path is required, set the value
-of `SYS_VARS_PATH` in your OS environment before app start.
+`SYS_VARS_PATH` must be a defined OS environment variable that is set
+before app start. If it is not found, a `sys_vars.SysVarNotFoundError`
+exception will be raised.
 
 
 ```python
@@ -44,6 +44,9 @@ sys_vars.get_json("CONFIGURED_TERMS")
 
 # Returns <class 'pathlib.Path'>
 sys_vars.get_path("CONFIG_PATH")
+
+# Raises `sys_vars.SysVarNotFoundError`
+sys_vars.get("DOES_NOT_EXIST")
 ```
 
 ## Building
