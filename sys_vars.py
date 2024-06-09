@@ -4,7 +4,12 @@ from os import environ, fspath
 from pathlib import Path
 from typing import Any, Dict, List, Optional, OrderedDict, Union
 
-import dotenv
+try:
+    from dotenv import dotenv_values
+except ImportError:
+    # If python-dotenv is not installed, provide a noop method
+    def dotenv_values(*args) -> OrderedDict:
+        return OrderedDict()
 
 
 __all__ = [
@@ -47,7 +52,7 @@ except KeyError:
 
 # Load the contents of a .env file.
 # It's OK if it doesn't exist
-__DOT_ENV_CONTENT: OrderedDict = dotenv.dotenv_values(__SYS_VARS_PATH / ".env")
+__DOT_ENV_CONTENT: OrderedDict = dotenv_values(__SYS_VARS_PATH / ".env")
 
 
 def __from_directory(key: str, /) -> Optional[str]:

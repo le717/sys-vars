@@ -6,10 +6,10 @@
 
 Requires Python 3.8+
 
-Load system variables for used in applications as secrets, variables,
-and other related contexts as native Python data types. Searches for
-a file in `SYS_VARS_PATH`, falling back to `os.enviorn`, and finally
-checking the contents of a `.env` file located in `SYS_VARS_PATH`.
+Load system variables for used in applications as secrets, variables, and other related contexts as
+native Python data types. Searches for a file in `SYS_VARS_PATH`, falling back to `os.enviorn`.
+If the package is installed with the `dotenv` extra (`pip install sys-vars[dotenv]`), there is a
+final check in the contents of a `.env` file located in `SYS_VARS_PATH`, if one exists.
 
 `SYS_VARS_PATH` must be a defined OS environment variable that is set
 before app start. If it is not found, a `KeyError` exception will be raised.

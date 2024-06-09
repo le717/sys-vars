@@ -19,7 +19,10 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-python-dotenv = "^0.21.0"
+python-dotenv = { version = "^1.0.1", optional = true }
+
+[tool.poetry.extras]
+dotenv = ["python-dotenv"]
 
 [tool.poetry.group.dev]
 
