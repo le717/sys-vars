@@ -6,9 +6,6 @@ authors = ["Caleb <le717@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/le717/sys-vars"
-# TODO: Add more classifiers
-# TODO: Find out why mypy thinks this module is untyped
-# TODO: update poetry version on machine
 classifiers = [
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
@@ -94,4 +91,3 @@ max-complexity = 10
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
-extra-standard-library = ["zoneinfo"]
