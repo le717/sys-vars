@@ -50,7 +50,7 @@ sys_vars.get("DOES_NOT_EXIST")
 
 ## Building
 
-1. Install [Poetry](https://python-poetry.org/) 1.2.0+
+1. Install [Poetry](https://python-poetry.org/) 1.6.0+
 1. Run `poetry install`
 1. Run `poetry build`
 1. Tests can be run via the provided VS Code test runner config.
