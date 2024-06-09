@@ -2,15 +2,15 @@ import json
 from datetime import datetime
 from os import environ, fspath
 from pathlib import Path
-from typing import Any, Dict, List, Optional, OrderedDict, Union
+from typing import Any, Dict, List, Optional, Union, cast
 
 
 try:
     from dotenv import dotenv_values
 except ImportError:
     # If python-dotenv is not installed, provide a noop method
-    def dotenv_values(_) -> OrderedDict:
-        return OrderedDict()
+    def dotenv_values(_) -> Dict:  # type: ignore [misc]
+        return {}
 
 
 __all__ = [
@@ -38,8 +38,8 @@ class SysVarNotFoundError(Exception):
         super().__init__(*args)
 
         # Provide some extra information about the exception
-        self.var_key: str = kwargs.pop("key", "")
-        self.var_type: str = kwargs.pop("type", "")
+        self.var_key = cast(str, kwargs.pop("key", ""))
+        self.var_type = cast(str, kwargs.pop("type", ""))
         self.var_path: str = fspath(globals()["__SYS_VARS_PATH"])
 
 
@@ -52,7 +52,7 @@ except KeyError:
 
 # Load the contents of a .env file.
 # It's OK if it doesn't exist
-__DOT_ENV_CONTENT: OrderedDict = dotenv_values(__SYS_VARS_PATH / ".env")
+__DOT_ENV_CONTENT: Dict[str, Optional[str]] = dotenv_values(__SYS_VARS_PATH / ".env")
 
 
 def __from_directory(key: str, /) -> Optional[str]:
@@ -69,18 +69,16 @@ def __from_env(key: str, /) -> Optional[str]:
 
 
 def __from_env_file(key: str, /) -> Optional[str]:
-    """Try to get the variable from a .env file."""
+    """Try to get the variable from a `.env` file."""
     return __DOT_ENV_CONTENT.get(key)
 
 
-def get(key: str, /, *, default: Optional[Any] = None, **kwargs: Dict[str, str]) -> str:
+def get(key: str, /, *, default: Optional[Any] = None, __var_type: str = "str") -> str:
     """Get a system variable value as a str type.
 
-    Check the value of SYS_VARS_PATH and os.environ for the key,
-    preferring values from SYS_VARS_PATH. If the key
-    is not found and a default value is specified,
-    the default value will be returned. Otherwise,
-    SysVarNotFoundError will be raised.
+    Check the value of `SYS_VARS_PATH` and `os.environ` for the key, preferring values
+    from `SYS_VARS_PATH`. If the key is not found and a default value is specified,
+    the default value will be returned. Otherwise, `SysVarNotFoundError` will be raised.
 
     @param key - The system variable key.
     @param default - A default value is the key is not found.
@@ -103,15 +101,16 @@ def get(key: str, /, *, default: Optional[Any] = None, **kwargs: Dict[str, str])
 
     # No default value was given, so raise an exception
     msg = f'Could not get value for system variable "{key}"'
-    raise SysVarNotFoundError(msg, key=key, type=kwargs.pop("var_type", "str"))
+    raise SysVarNotFoundError(msg, key=key, type=__var_type)
 
 
-def get_bool(key: str, /, **kwargs: Dict[str, Any]) -> bool:
-    """Get a system variable as a bool object.
+def get_bool(key: str, /, *, default: Optional[Any] = None) -> bool:
+    """Get a system variable as a `bool` object.
 
-    See signature of get() for parameter details."""
+    See signature of `get()` for full parameter details.
+    """
     # Start by getting the system value
-    sys_val = get(key, var_type="bool", **kwargs)
+    sys_val = get(key, default=default, __var_type="bool")
 
     # We have an actual boolean data type
     # (most likely a specified default value).
@@ -130,17 +129,18 @@ def get_bool(key: str, /, **kwargs: Dict[str, Any]) -> bool:
     return bool(sys_val)
 
 
-def get_datetime(key: str, /, **kwargs: Dict[str, Any]) -> datetime:
-    """Get a system variable as a datetime.datetime object.
+def get_datetime(key: str, /, *, default: Optional[Any] = None) -> datetime:
+    """Get a system variable as a `datetime.datetime` object.
 
-    The datestring is parsed using datetime.datetime.fromisoformat(),
+    The datestring is parsed using `datetime.datetime.fromisoformat()`,
     and as such, expects ISO 8601 strings written using
-    date.isoformat() or datetime.isoformat().
+    `date.isoformat()` or `datetime.isoformat()`.
 
-    Raises ValueError if the data cannot be cast.
+    Raises `ValueError` if the data cannot be cast.
 
-    See signature of get() for parameter details."""
-    sys_val = get(key, var_type="datetime", **kwargs)
+    See signature of `get()` for full parameter details.
+    """
+    sys_val = get(key, default=default, __var_type="datetime")
 
     # We have an actual datetime obj (most likely a default val)
     # There's nothing more to do
@@ -149,38 +149,41 @@ def get_datetime(key: str, /, **kwargs: Dict[str, Any]) -> datetime:
     return datetime.fromisoformat(sys_val)
 
 
-def get_float(key: str, /, **kwargs: Dict[str, Any]) -> float:
-    """Get a system variable as a float value.
+def get_float(key: str, /, *, default: Optional[Any] = None) -> float:
+    """Get a system variable as a `float` value.
 
-    Raises ValueError if the data cannot be cast.
+    Raises `ValueError` if the data cannot be cast.
 
-    See signature of get() for parameter details."""
-    return float(get(key, var_type="float", **kwargs))
-
-
-def get_int(key: str, /, **kwargs: Dict[str, Any]) -> int:
-    """Get a system variable as an int value.
-
-    Raises ValueError if the data cannot be cast.
-
-    See signature of get() for parameter details."""
-    return int(get(key, var_type="int", **kwargs))
+    See signature of `get()` for full parameter details.
+    """
+    return float(get(key, default=default, __var_type="float"))
 
 
-def get_json(key: str, /, **kwargs: Dict[str, Any]) -> Union[Dict[str, Any], List[Any]]:
-    """Get a JSON string system variable as a dictionary object.
+def get_int(key: str, /, *, default: Optional[Any] = None) -> int:
+    """Get a system variable as an `int` value.
+
+    Raises `ValueError` if the data cannot be cast.
+
+    See signature of `get()` for full parameter details.
+    """
+    return int(get(key, default=default, __var_type="int"))
+
+
+def get_json(key: str, /, *, default: Optional[Any] = None) -> Union[Dict[str, Any], List[Any]]:
+    """Get a JSON string system variable as a `dict` object.
 
     Unlike the other methods whose names suggest the return data type
     of the system variable, this method refers to the type of data
     that is being retrieved. Because a raw JSON string is probably
     not too useful, the JSON string is automatically decoded into
     a Python dictionary or list for immediate consumption by the caller.
-    This operates in a similar vein Flask's Request/Response get_json method.
+    This operates in a similar vein Flask's Request/Response `get_json()` method.
 
-    Raises json.JSONDecodeError if the JSON data cannot be decoded.
+    Raises `json.JSONDecodeError` if the JSON data cannot be decoded.
 
-    See signature of get() for parameter details."""
-    sys_val = get(key, var_type="json", **kwargs)
+    See signature of `get()` for full parameter details.
+    """
+    sys_val = get(key, default=default, __var_type="json")
 
     # We have a dictionary or list (most likely a default val)
     # There's nothing more to do
@@ -190,8 +193,9 @@ def get_json(key: str, /, **kwargs: Dict[str, Any]) -> Union[Dict[str, Any], Lis
     return json.loads(sys_val)
 
 
-def get_path(key: str, /, **kwargs: Dict[str, Any]) -> Path:
-    """Get a file path string system variable as a pathlib.Path instance.
+def get_path(key: str, /, *, default: Optional[Any] = None) -> Path:
+    """Get a file path string system variable as a `pathlib.Path` instance.
 
-    See signature of get() for parameter details."""
-    return Path(get(key, var_type="path", **kwargs))
+    See signature of `get()` for full parameter details.
+    """
+    return Path(get(key, default=default, __var_type="path"))
