@@ -4,17 +4,17 @@ version = "5.0.1"
 description = "Access system variables in your code as native Python data types."
 authors = ["Caleb <le717@users.noreply.github.com>"]
 license = "MIT"
-readme="README.md"
-repository="https://github.com/le717/sys-vars"
+readme = "README.md"
+repository = "https://github.com/le717/sys-vars"
 # TODO: Add more classifiers
 # TODO: Find out why mypy thinks this module is untyped
 # TODO: update poetry version on machine
 classifiers = [
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Typing :: Typed"
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Typing :: Typed",
 ]
 
 [tool.poetry.dependencies]
@@ -38,12 +38,13 @@ build-backend = "poetry.core.masonry.api"
 target-version = "py38"
 line-length = 100
 indent-width = 4
+extend-exclude = ["tests", "sys_vars.pyi"]
 
 [tool.ruff.lint]
 preview = true
 
 ignore = [
-  "COM812",  #missing-trailing-comma
+  "COM812",  # missing-trailing-comma
   "PLR6301", # no-self-use
   "PLR1711", # useless-return
   "RET501",  # unnecessary-return-none

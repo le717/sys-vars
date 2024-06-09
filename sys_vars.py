@@ -4,15 +4,17 @@ from os import environ, fspath
 from pathlib import Path
 from typing import Any, Dict, List, Optional, OrderedDict, Union
 
+
 try:
     from dotenv import dotenv_values
 except ImportError:
     # If python-dotenv is not installed, provide a noop method
-    def dotenv_values(*args) -> OrderedDict:
+    def dotenv_values(_) -> OrderedDict:
         return OrderedDict()
 
 
 __all__ = [
+    "SysVarNotFoundError",
     "get",
     "get_bool",
     "get_datetime",
@@ -20,7 +22,6 @@ __all__ = [
     "get_int",
     "get_json",
     "get_path",
-    "SysVarNotFoundError",
 ]
 
 
@@ -46,9 +47,8 @@ class SysVarNotFoundError(Exception):
 try:
     __SYS_VARS_PATH = Path(environ["SYS_VARS_PATH"]).resolve()
 except KeyError:
-    raise KeyError(
-        "`SYS_VARS_PATH` could not be found in the current environment."
-    ) from None
+    msg = "`SYS_VARS_PATH` could not be found in the current environment."
+    raise KeyError(msg) from None
 
 # Load the contents of a .env file.
 # It's OK if it doesn't exist
@@ -102,11 +102,8 @@ def get(key: str, /, *, default: Optional[Any] = None, **kwargs: Dict[str, str])
         return default
 
     # No default value was given, so raise an exception
-    raise SysVarNotFoundError(
-        f'Could not get value for system variable "{key}"',
-        key=key,
-        type=kwargs.pop("var_type", "str"),
-    )
+    msg = f'Could not get value for system variable "{key}"'
+    raise SysVarNotFoundError(msg, key=key, type=kwargs.pop("var_type", "str"))
 
 
 def get_bool(key: str, /, **kwargs: Dict[str, Any]) -> bool:
@@ -123,15 +120,14 @@ def get_bool(key: str, /, **kwargs: Dict[str, Any]) -> bool:
         return sys_val
 
     # We got a "word" string back, check if is an boolean word
-    elif sys_val.isalpha():
+    if sys_val.isalpha():
         bool_strings = ("y", "yes", "t", "true")
         return sys_val.lower() in bool_strings
 
     # The sys val is mostly likely number, cast it
     # and check the truthy-ness of the resulting number
-    else:
-        sys_val = float(sys_val)
-        return bool(sys_val)
+    sys_val = float(sys_val)
+    return bool(sys_val)
 
 
 def get_datetime(key: str, /, **kwargs: Dict[str, Any]) -> datetime:
@@ -188,7 +184,7 @@ def get_json(key: str, /, **kwargs: Dict[str, Any]) -> Union[Dict[str, Any], Lis
 
     # We have a dictionary or list (most likely a default val)
     # There's nothing more to do
-    if isinstance(sys_val, dict) or isinstance(sys_val, list):
+    if isinstance(sys_val, (dict, list)):
         return sys_val
 
     return json.loads(sys_val)
