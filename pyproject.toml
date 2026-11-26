@@ -1,56 +1,46 @@
-[tool.poetry]
+[project]
 name = "sys-vars"
-version = "5.1.0"
+version = "5.2.0"
 description = "Access system variables in your code as native Python data types."
-authors = ["Caleb <le717@users.noreply.github.com>"]
-license = "MIT"
 readme = "README.md"
-repository = "https://github.com/le717/sys-vars"
+authors = [{ name = "Caleb", email = "le717@users.noreply.github.com" }]
+license = "MIT"
+# TODO: urls
 classifiers = [
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Software Development :: Version Control :: Git",
   "Typing :: Typed",
 ]
-include = ["py.typed"]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-python-dotenv = { version = "^1.0.1", optional = true }
+requires-python = ">=3.14"
+dependencies = []
 
-[tool.poetry.extras]
-dotenv = ["python-dotenv"]
+[project.urls]
+homepage = "https://github.com/le717/sys-vars"
+source = "https://github.com/le717/sys-vars.git"
 
-[tool.poetry.group.dev]
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.4.8"
-mypy = "^1.10.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.mypy]
-python_version = "3.8"
+[dependency-groups]
+dev = ["ruff>=0.17.6", "ty>=0.0.111"]
+dotenv = ["python-dotenv>=1.2.4"]
 
 [tool.ruff]
-target-version = "py38"
 line-length = 100
 indent-width = 4
-extend-exclude = ["tests", "sys_vars.pyi"]
+extend-exclude = ["tests"]
 
 [tool.ruff.lint]
 preview = true
 
 ignore = [
-  "COM812",  # missing-trailing-comma
-  "PLR6301", # no-self-use
-  "PLR1711", # useless-return
-  "RET501",  # unnecessary-return-none
-  "TD002",   # missing-todo-author
-  "TD003",   # missing-todo-link
+  "missing-trailing-comma",  # missing-trailing-comma
+  "no-self-use",             # no-self-use
+  "useless-return",          # useless-return
+  "unnecessary-return-none", # unnecessary-return-none
+  "missing-todo-author",     # missing-todo-author
+  "missing-todo-link",       # missing-todo-link
 ]
 
 select = [
