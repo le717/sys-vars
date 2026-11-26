@@ -4,15 +4,8 @@ from os import environ
 from pathlib import Path
 from typing import Any
 
+from ._env import dot_env
 from .exceptions import SysVarNotFoundError
-
-
-try:
-    from dotenv import dotenv_values
-except ImportError:
-    # If python-dotenv is not installed, provide a noop method
-    def dotenv_values(_) -> dict:  # type: ignore [misc]
-        return {}
 
 
 __all__ = [
@@ -33,9 +26,8 @@ except KeyError:
     msg = "`SYS_VARS_PATH` could not be found in the current environment."
     raise KeyError(msg) from None
 
-# Load the contents of a .env file.
-# It's OK if it doesn't exist
-__DOT_ENV_CONTENT: dict[str, str | None] = dotenv_values(__SYS_VARS_PATH / ".env")
+# Load the contents of a .env file. It's OK if it doesn't exist
+__DOT_ENV_CONTENT: dict[str, str | None] = dot_env(__SYS_VARS_PATH / ".env")
 
 
 def __from_directory(key: str, /) -> str | None:

@@ -17,13 +17,14 @@ class Tests(unittest.TestCase):
         # we need to import it here and make it a global variable
         global sys_vars
         import sys_vars
+        import sys_vars.exceptions
 
     def test_not_found_sys_var_w_default(self) -> None:
         val = sys_vars.get("NON_EXISTENT_SYSTEM_VARIABLE", default="this-is-the-default")
         self.assertEqual(val, "this-is-the-default")
 
     def test_not_found_sys_var_wo_default(self) -> None:
-        with self.assertRaises(sys_vars.SysVarNotFoundError):
+        with self.assertRaises(sys_vars.exceptions.SysVarNotFoundError):
             sys_vars.get("NON_EXISTENT_SYSTEM_VARIABLE")
 
     def test_get_sys_var(self) -> None:
