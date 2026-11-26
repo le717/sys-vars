@@ -6,15 +6,7 @@ from warnings import warn
 from ._core import SysVars
 
 
-__all__ = [
-    "get",
-    "get_bool",
-    "get_datetime",
-    "get_float",
-    "get_int",
-    "get_json",
-    "get_path",
-]
+__all__ = ["get", "get_bool", "get_datetime", "get_float", "get_int", "get_json", "get_path"]
 
 
 # Internal instance of class
@@ -23,6 +15,8 @@ __sys_vars = SysVars()
 
 def get(key: str, /, *, default: Any | None = None) -> str:
     """Get a system variable value as a str type.
+
+     TODO: duplicated docstring from class!
 
     Check the value of `SYS_VARS_PATH` and `os.environ` for the key, preferring values
     from `SYS_VARS_PATH`. If the key is not found and a default value is specified,
