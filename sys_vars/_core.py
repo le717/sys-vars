@@ -91,15 +91,15 @@ class SysVars:
         @return - The system variable value.
         """
 
-    def get_bool(self) -> bool:
+    def get_bool(self, key: str, /, *, default: Any | None = None) -> bool:
         """Get a system variable as a `bool` object.
 
         See signature of `get()` for full parameter details.
         """
 
-    def get_date(self) -> date: ...
+    def get_date(self, key: str, /, *, default: Any | None = None) -> date: ...
 
-    def get_datetime(self) -> datetime:
+    def get_datetime(self, key: str, /, *, default: Any | None = None) -> datetime:
         """Get a system variable as a `datetime.datetime` object.
 
         The datestring is parsed using `datetime.datetime.fromisoformat()`,
@@ -111,9 +111,9 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_decimal(self) -> Decimal: ...
+    def get_decimal(self, key: str, /, *, default: Any | None = None) -> Decimal: ...
 
-    def get_float(self) -> float:
+    def get_float(self, key: str, /, *, default: Any | None = None) -> float:
         """Get a system variable as a `float` value.
 
         Raises `ValueError` if the data cannot be cast.
@@ -121,7 +121,7 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_int(self) -> int:
+    def get_int(self, key: str, /, *, default: Any | None = None) -> int:
         """Get a system variable as an `int` value.
 
         Raises `ValueError` if the data cannot be cast.
@@ -129,7 +129,7 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_json(self) -> dict[str, Any] | list[Any]:
+    def get_json(self, key: str, /, *, default: Any | None = None) -> dict[str, Any] | list[Any]:
         """Get a JSON string system variable as a `dict` or `list`.
 
         Unlike the other methods whose names suggest the return data type
@@ -144,7 +144,7 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_path(self) -> Path:
+    def get_path(self, key: str, /, *, default: Any | None = None) -> Path:
         """Get a file path string system variable as a `pathlib.Path` instance.
 
         See signature of `get()` for full parameter details.

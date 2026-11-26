@@ -21,7 +21,7 @@ __all__ = [
 __sys_vars = SysVars()
 
 
-def get(key: str, /, *, default: Any | None = None, __var_type: str = "str") -> str:
+def get(key: str, /, *, default: Any | None = None) -> str:
     """Get a system variable value as a str type.
 
     Check the value of `SYS_VARS_PATH` and `os.environ` for the key, preferring values
@@ -35,7 +35,7 @@ def get(key: str, /, *, default: Any | None = None, __var_type: str = "str") -> 
     warn(
         "`sys_vars.get()` is deprecated. Please switch to the class-based API.", DeprecationWarning
     )
-    return __sys_vars.get(key, default=default, __var_type=__var_type)
+    return __sys_vars.get(key, default=default)
 
 
 def get_bool(key: str, /, *, default: Any | None = None) -> bool:
@@ -47,7 +47,7 @@ def get_bool(key: str, /, *, default: Any | None = None) -> bool:
         "`sys_vars.get_bool()` is deprecated. Please switch to the class-based API.",
         DeprecationWarning,
     )
-    return __sys_vars.get_bool(key, default=default, __var_type="bool")
+    return __sys_vars.get_bool(key, default=default)
 
 
 def get_datetime(key: str, /, *, default: Any | None = None) -> datetime:
@@ -65,7 +65,7 @@ def get_datetime(key: str, /, *, default: Any | None = None) -> datetime:
         "`sys_vars.get_datetime()` is deprecated. Please switch to the class-based API.",
         DeprecationWarning,
     )
-    return __sys_vars.get_datetime(key, default=default, __var_type="datetime")
+    return __sys_vars.get_datetime(key, default=default)
 
 
 def get_float(key: str, /, *, default: Any | None = None) -> float:
@@ -79,7 +79,7 @@ def get_float(key: str, /, *, default: Any | None = None) -> float:
         "`sys_vars.get_float()` is deprecated. Please switch to the class-based API.",
         DeprecationWarning,
     )
-    return __sys_vars.get_float(key, default=default, __var_type="float")
+    return __sys_vars.get_float(key, default=default)
 
 
 def get_int(key: str, /, *, default: Any | None = None) -> int:
@@ -93,7 +93,7 @@ def get_int(key: str, /, *, default: Any | None = None) -> int:
         "`sys_vars.get_int()` is deprecated. Please switch to the class-based API.",
         DeprecationWarning,
     )
-    return __sys_vars.get_int(key, default=default, __var_type="int")
+    return __sys_vars.get_int(key, default=default)
 
 
 def get_json(key: str, /, *, default: Any | None = None) -> dict[str, Any] | list[Any]:
@@ -114,7 +114,7 @@ def get_json(key: str, /, *, default: Any | None = None) -> dict[str, Any] | lis
         "`sys_vars.get_json()` is deprecated. Please switch to the class-based API.",
         DeprecationWarning,
     )
-    return __sys_vars.get_json(key, default=default, __var_type="json")
+    return __sys_vars.get_json(key, default=default)
 
 
 def get_path(key: str, /, *, default: Any | None = None) -> Path:
@@ -126,4 +126,4 @@ def get_path(key: str, /, *, default: Any | None = None) -> Path:
         "`sys_vars.get_path()` is deprecated. Please switch to the class-based API.",
         DeprecationWarning,
     )
-    return __sys_vars.get_path(key, default=default, __var_type="path")
+    return __sys_vars.get_path(key, default=default)
