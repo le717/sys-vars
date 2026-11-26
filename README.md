@@ -1,9 +1,7 @@
 # sys-vars
-
 > Access system variables in your code as native Python data types.
 
 ## Usage
-
 Requires Python 3.14+
 
 Load system variables for used in applications as secrets, variables, and other related contexts as
@@ -49,7 +47,6 @@ sys_vars.get("DOES_NOT_EXIST")
 ```
 
 ## Building
-
 1. Install [uv](https://docs.astral.sh/uv/)
 1. Run `uv sync`
 1. Run `uv build`

@@ -1,6 +1,6 @@
 [project]
 name = "sys-vars"
-version = "5.2.0"
+version = "6.0.0a1"
 description = "Access system variables in your code as native Python data types."
 readme = "README.md"
 authors = [{ name = "Caleb", email = "le717@users.noreply.github.com" }]
