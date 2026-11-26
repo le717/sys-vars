@@ -32,7 +32,9 @@ def get(key: str, /, *, default: Any | None = None, __var_type: str = "str") -> 
     @param default - A default value is the key is not found.
     @return - The system variable value.
     """
-    warn("TODO: write me!", DeprecationWarning)
+    warn(
+        "`sys_vars.get()` is deprecated. Please switch to the class-based API.", DeprecationWarning
+    )
     return __sys_vars.get(key, default=default, __var_type=__var_type)
 
 
@@ -41,7 +43,10 @@ def get_bool(key: str, /, *, default: Any | None = None) -> bool:
 
     See signature of `get()` for full parameter details.
     """
-    warn("TODO: write me!", DeprecationWarning)
+    warn(
+        "`sys_vars.get_bool()` is deprecated. Please switch to the class-based API.",
+        DeprecationWarning,
+    )
     return __sys_vars.get_bool(key, default=default, __var_type="bool")
 
 
@@ -56,7 +61,10 @@ def get_datetime(key: str, /, *, default: Any | None = None) -> datetime:
 
     See signature of `get()` for full parameter details.
     """
-    warn("TODO: write me!", DeprecationWarning)
+    warn(
+        "`sys_vars.get_datetime()` is deprecated. Please switch to the class-based API.",
+        DeprecationWarning,
+    )
     return __sys_vars.get_datetime(key, default=default, __var_type="datetime")
 
 
@@ -67,7 +75,10 @@ def get_float(key: str, /, *, default: Any | None = None) -> float:
 
     See signature of `get()` for full parameter details.
     """
-    warn("TODO: write me!", DeprecationWarning)
+    warn(
+        "`sys_vars.get_float()` is deprecated. Please switch to the class-based API.",
+        DeprecationWarning,
+    )
     return __sys_vars.get_float(key, default=default, __var_type="float")
 
 
@@ -78,7 +89,10 @@ def get_int(key: str, /, *, default: Any | None = None) -> int:
 
     See signature of `get()` for full parameter details.
     """
-    warn("TODO: write me!", DeprecationWarning)
+    warn(
+        "`sys_vars.get_int()` is deprecated. Please switch to the class-based API.",
+        DeprecationWarning,
+    )
     return __sys_vars.get_int(key, default=default, __var_type="int")
 
 
@@ -96,7 +110,10 @@ def get_json(key: str, /, *, default: Any | None = None) -> dict[str, Any] | lis
 
     See signature of `get()` for full parameter details.
     """
-    warn("TODO: write me!", DeprecationWarning)
+    warn(
+        "`sys_vars.get_json()` is deprecated. Please switch to the class-based API.",
+        DeprecationWarning,
+    )
     return __sys_vars.get_json(key, default=default, __var_type="json")
 
 
@@ -105,5 +122,8 @@ def get_path(key: str, /, *, default: Any | None = None) -> Path:
 
     See signature of `get()` for full parameter details.
     """
-    warn("TODO: write me!", DeprecationWarning)
+    warn(
+        "`sys_vars.get_path()` is deprecated. Please switch to the class-based API.",
+        DeprecationWarning,
+    )
     return __sys_vars.get_path(key, default=default, __var_type="path")
