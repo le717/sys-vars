@@ -2,7 +2,9 @@ import json
 from datetime import datetime
 from os import environ, fspath
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
+
+from .exceptions import SysVarNotFoundError
 
 
 try:
@@ -14,7 +16,6 @@ except ImportError:
 
 
 __all__ = [
-    "SysVarNotFoundError",
     "get",
     "get_bool",
     "get_datetime",
@@ -23,24 +24,6 @@ __all__ = [
     "get_json",
     "get_path",
 ]
-
-
-class SysVarNotFoundError(Exception):
-    """A system variable was not found at `SYS_VARS_PATH`.
-
-    Additional information about the exception may be available:
-    - `var_key: str`
-    - `var_type: str`
-    - `var_path: str`
-    """
-
-    def __init__(self, *args: object, **kwargs: dict[str, str]) -> None:
-        super().__init__(*args)
-
-        # Provide some extra information about the exception
-        self.var_key = cast(str, kwargs.pop("key", ""))
-        self.var_type = cast(str, kwargs.pop("type", ""))
-        self.var_path: str = fspath(globals()["__SYS_VARS_PATH"])
 
 
 # Get the defined sys vars path from the environment
@@ -101,7 +84,7 @@ def get(key: str, /, *, default: Any | None = None, __var_type: str = "str") -> 
 
     # No default value was given, so raise an exception
     msg = f'Could not get value for system variable "{key}"'
-    raise SysVarNotFoundError(msg, key=key, type=__var_type)
+    raise SysVarNotFoundError(msg, var_key=key, var_type=__var_type)
 
 
 def get_bool(key: str, /, *, default: Any | None = None) -> bool:

@@ -4,7 +4,7 @@
 
 ## Usage
 
-Requires Python 3.8+
+Requires Python 3.14+
 
 Load system variables for used in applications as secrets, variables, and other related contexts as
 native Python data types. Searches for a file in `SYS_VARS_PATH`, falling back to `os.enviorn`.
@@ -44,15 +44,15 @@ sys_vars.get_json("CONFIGURED_TERMS")
 # Returns <class 'pathlib.Path'>
 sys_vars.get_path("CONFIG_PATH")
 
-# Raises `sys_vars.SysVarNotFoundError`
+# Raises `sys_vars.exceptions.SysVarNotFoundError`
 sys_vars.get("DOES_NOT_EXIST")
 ```
 
 ## Building
 
-1. Install [Poetry](https://python-poetry.org/) 1.6.0+
-1. Run `poetry install`
-1. Run `poetry build`
+1. Install [uv](https://docs.astral.sh/uv/)
+1. Run `uv sync`
+1. Run `uv build`
 1. Tests can be run via the provided VS Code test runner config.
 
 The resulting `.whl` file will be located at
