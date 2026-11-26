@@ -117,11 +117,7 @@ class SysVars:
         :return - The system variable value.
         """
         # First check the known keys, then our sys vars path directory, falling back to the env
-        var_value = self.__known_vars.get(key)
-        if var_value is None:
-            var_value = __from_directory(key)
-        if var_value is None:
-            var_value = __from_env(key)
+        var_value = self.__known_vars.get(key) or self._from_directory(key) or self._from_env(key)
 
         # We have a value, store it for quicker next time lookups before providing it to the caller
         if var_value is not None:
