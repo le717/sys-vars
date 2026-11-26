@@ -97,13 +97,23 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_date(self, key: str, /, *, default: Any | None = None) -> date: ...
+    def get_date(self, key: str, /, *, default: Any | None = None) -> date:
+        """Get a system variable as a `datetime.date` object.
+
+        The date string is parsed using `datetime.dat.fromisoformat()`,
+        and as such, expects ISO 8601 strings written using
+        `date.isoformat()`.
+
+        Raises `ValueError` if the data cannot be cast.
+
+        See signature of `get()` for full parameter details.
+        """
 
     def get_datetime(self, key: str, /, *, default: Any | None = None) -> datetime:
         """Get a system variable as a `datetime.datetime` object.
 
-        The datestring is parsed using `datetime.datetime.fromisoformat()`,
-          and as such, expects ISO 8601 strings written using
+        The datetime string is parsed using `datetime.datetime.fromisoformat()`,
+        and as such, expects ISO 8601 strings written using
         `date.isoformat()` or `datetime.isoformat()`.
 
         Raises `ValueError` if the data cannot be cast.
@@ -111,7 +121,11 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_decimal(self, key: str, /, *, default: Any | None = None) -> Decimal: ...
+    def get_decimal(self, key: str, /, *, default: Any | None = None) -> Decimal:
+        """Get a system variable as a `Decimal` instance.
+
+        See signature of `get()` for full parameter details.
+        """
 
     def get_float(self, key: str, /, *, default: Any | None = None) -> float:
         """Get a system variable as a `float` value.
@@ -132,12 +146,11 @@ class SysVars:
     def get_json(self, key: str, /, *, default: Any | None = None) -> dict[str, Any] | list[Any]:
         """Get a JSON string system variable as a `dict` or `list`.
 
-        Unlike the other methods whose names suggest the return data type
-        of the system variable, this method refers to the type of data
-        that is being retrieved. Because a raw JSON string is probably
-        not too useful, the JSON string is automatically decoded into
-        a Python dictionary or list for immediate consumption by the caller.
-        This operates in a similar vein Flask's Request/Response `get_json()` method.
+        Unlike the other methods whose names suggest the return data type  of the system variable,
+        this method refers to the type of data that is being retrieved. Because a raw JSON string is
+        probably not too useful, the JSON string is automatically decoded into a Python dictionary
+        or list for immediate consumption by the caller. This operates in a similar vein of
+        Flask's Request/Response `get_json()` method.
 
         Raises `json.JSONDecodeError` if the JSON data cannot be decoded.
 
@@ -178,7 +191,7 @@ def get(key: str, /, *, default: Any | None = None, __var_type: str = "str") -> 
         return default
 
     # No default value was given, so raise an exception
-    msg = f'Could not get value for system variable "{key}"'
+    msg = f"Could not get value for system variable {key!r}"
     raise SysVarNotFoundError(msg, var_key=key, var_type=__var_type)
 
 
