@@ -44,8 +44,11 @@ class SysVars:
     """Access system variables in your code as native Python data types.
 
 
+    TODO: self.set_path
     TODO: `.env` support
     TODO: `.env` data will be loaded at init
+    TODO: key=value caching
+    TODO: self.reload
     """
 
     def __init__(self, p: Path | None = None, /) -> None:
@@ -78,6 +81,7 @@ class SysVars:
 
     def reload(self) -> None:
         """TODO: write me!"""
+        # TODO: consider reloading all currently known variables instead of full dump
         self.__known_vars.clear()
         self._load_dot_env()
         return None
@@ -125,7 +129,10 @@ class SysVars:
             self.__known_vars[key] = var_value.strip()
             return var_value
 
-        # We couldn't find the variable anywhere, try to send back a default value
+        # We couldn't find the variable anywhere, try to send back a default value. The default
+        # value is intentionally not cached, as it could be foreseen that the default could be
+        # different if called again. Although that doesn't immediately make sense to do by the
+        # consumer of this library, the fact it was thought of means it probably happens somewhere
         if default is not None:
             return default
 
