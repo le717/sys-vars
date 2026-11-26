@@ -13,7 +13,7 @@ __all__ = ["get", "get_bool", "get_datetime", "get_float", "get_int", "get_json"
 __sys_vars = SysVars()
 
 
-def get(key: str, /, *, default: Any | None = None) -> str:
+def get(key: str, /, *, default: Any = None) -> str:
     """Get a system variable value as a str type.
 
     TODO: duplicated docstring from class!
@@ -32,7 +32,7 @@ def get(key: str, /, *, default: Any | None = None) -> str:
     return __sys_vars.get(key, default=default)
 
 
-def get_bool(key: str, /, *, default: Any | None = None) -> bool:
+def get_bool(key: str, /, *, default: Any = None) -> bool:
     """Get a system variable as a `bool` object.
 
     See signature of `get()` for full parameter details.
@@ -44,7 +44,7 @@ def get_bool(key: str, /, *, default: Any | None = None) -> bool:
     return __sys_vars.get_bool(key, default=default)
 
 
-def get_datetime(key: str, /, *, default: Any | None = None) -> datetime:
+def get_datetime(key: str, /, *, default: Any = None) -> datetime:
     """Get a system variable as a `datetime.datetime` object.
 
     The datestring is parsed using `datetime.datetime.fromisoformat()`,
@@ -62,7 +62,7 @@ def get_datetime(key: str, /, *, default: Any | None = None) -> datetime:
     return __sys_vars.get_datetime(key, default=default)
 
 
-def get_float(key: str, /, *, default: Any | None = None) -> float:
+def get_float(key: str, /, *, default: Any = None) -> float:
     """Get a system variable as a `float` value.
 
     Raises `ValueError` if the data cannot be cast.
@@ -76,7 +76,7 @@ def get_float(key: str, /, *, default: Any | None = None) -> float:
     return __sys_vars.get_float(key, default=default)
 
 
-def get_int(key: str, /, *, default: Any | None = None) -> int:
+def get_int(key: str, /, *, default: Any = None) -> int:
     """Get a system variable as an `int` value.
 
     Raises `ValueError` if the data cannot be cast.
@@ -90,7 +90,7 @@ def get_int(key: str, /, *, default: Any | None = None) -> int:
     return __sys_vars.get_int(key, default=default)
 
 
-def get_json(key: str, /, *, default: Any | None = None) -> dict[str, Any] | list[Any]:
+def get_json(key: str, /, *, default: Any = None) -> dict[str, Any] | list[Any]:
     """Get a JSON string system variable as a `dict` object.
 
     Unlike the other methods whose names suggest the return data type
@@ -111,7 +111,7 @@ def get_json(key: str, /, *, default: Any | None = None) -> dict[str, Any] | lis
     return __sys_vars.get_json(key, default=default)
 
 
-def get_path(key: str, /, *, default: Any | None = None) -> Path:
+def get_path(key: str, /, *, default: Any = None) -> Path:
     """Get a file path string system variable as a `pathlib.Path` instance.
 
     See signature of `get()` for full parameter details.

@@ -107,7 +107,7 @@ class SysVars:
             msg = "The environment variable 'SYS_VARS_PATH' could not be found."
             raise KeyError(msg) from None
 
-    def get(self, key: str, /, *, default: Any | None = None, __var_type: str = "str") -> str:
+    def get(self, key: str, /, *, default: Any = "", __var_type: str = "str") -> str:
         """Get a system variable value as a `str` value.
 
         TODO: revise docstring!
@@ -140,13 +140,13 @@ class SysVars:
         msg = f"Could not get value for system variable {key!r}"
         raise SysVarNotFoundError(msg, var_key=key, var_type=__var_type)
 
-    def get_bool(self, key: str, /, *, default: Any | None = None) -> bool:
+    def get_bool(self, key: str, /, *, default: Any = None) -> bool:
         """Get a system variable as a `bool` object.
 
         See signature of `get()` for full parameter details.
         """
 
-    def get_date(self, key: str, /, *, default: Any | None = None) -> date:
+    def get_date(self, key: str, /, *, default: Any = None) -> date:
         """Get a system variable as a `datetime.date` object.
 
         The date string is parsed using `datetime.dat.fromisoformat()`,
@@ -158,7 +158,7 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_datetime(self, key: str, /, *, default: Any | None = None) -> datetime:
+    def get_datetime(self, key: str, /, *, default: Any = None) -> datetime:
         """Get a system variable as a `datetime.datetime` object.
 
         The datetime string is parsed using `datetime.datetime.fromisoformat()`,
@@ -170,13 +170,13 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_decimal(self, key: str, /, *, default: Any | None = None) -> Decimal:
+    def get_decimal(self, key: str, /, *, default: Any = None) -> Decimal:
         """Get a system variable as a `Decimal` instance.
 
         See signature of `get()` for full parameter details.
         """
 
-    def get_float(self, key: str, /, *, default: Any | None = None) -> float:
+    def get_float(self, key: str, /, *, default: Any = None) -> float:
         """Get a system variable as a `float` value.
 
         Raises `ValueError` if the data cannot be cast.
@@ -184,7 +184,7 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_int(self, key: str, /, *, default: Any | None = None) -> int:
+    def get_int(self, key: str, /, *, default: Any = None) -> int:
         """Get a system variable as an `int` value.
 
         Raises `ValueError` if the data cannot be cast.
@@ -192,7 +192,7 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_json(self, key: str, /, *, default: Any | None = None) -> dict[str, Any] | list[Any]:
+    def get_json(self, key: str, /, *, default: Any = None) -> dict[str, Any] | list[Any]:
         """Get a JSON string system variable as a `dict` or `list`.
 
         Unlike the other methods whose names suggest the return data type  of the system variable,
@@ -206,7 +206,7 @@ class SysVars:
         See signature of `get()` for full parameter details.
         """
 
-    def get_path(self, key: str, /, *, default: Any | None = None) -> Path:
+    def get_path(self, key: str, /, *, default: Any = None) -> Path:
         """Get a file path string system variable as a `pathlib.Path` instance.
 
         See signature of `get()` for full parameter details.
