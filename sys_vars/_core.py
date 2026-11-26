@@ -104,16 +104,38 @@ class SysVars:
             raise KeyError(msg) from None
 
     def get(self, key: str, /, *, default: Any | None = None, __var_type: str = "str") -> str:
-        """Get a system variable value as a str type.
+        """Get a system variable value as a `str` value.
+
+        TODO: revise docstring!
 
         Check the value of `SYS_VARS_PATH` and `os.environ` for the key, preferring values
         from `SYS_VARS_PATH`. If the key is not found and a default value is specified,
         the default value will be returned. Otherwise, `SysVarNotFoundError` will be raised.
 
-        @param key - The system variable key.
-        @param default - A default value is the key is not found.
-        @return - The system variable value.
+        :param key - The system variable key.
+        :param default - A default value is the key is not found.
+        :return - The system variable value.
         """
+        # First check the known keys, then our sys vars path directory, falling back to the env
+        var_value = self.__known_vars.get(key)
+        if var_value is None:
+            var_value = __from_directory(key)
+        if var_value is None:
+            var_value = __from_env(key)
+
+        # We have a value, store it for quicker next time lookups before providing it to the caller
+        if var_value is not None:
+            var_value = var_value.strip()
+            self.__known_vars[key] = var_value.strip()
+            return var_value
+
+        # We couldn't find the variable anywhere, try to send back a default value
+        if default is not None:
+            return default
+
+        # No default value was given, so raise an exception
+        msg = f"Could not get value for system variable {key!r}"
+        raise SysVarNotFoundError(msg, var_key=key, var_type=__var_type)
 
     def get_bool(self, key: str, /, *, default: Any | None = None) -> bool:
         """Get a system variable as a `bool` object.
