@@ -5,7 +5,6 @@ description = "Access system variables in your code as native Python data types.
 readme = "README.md"
 authors = [{ name = "Caleb", email = "le717@users.noreply.github.com" }]
 license = "MIT"
-# TODO: urls
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Programming Language :: Python :: 3",
@@ -36,7 +35,6 @@ preview = true
 
 ignore = [
   "missing-trailing-comma",  # missing-trailing-comma
-  "no-self-use",             # no-self-use
   "useless-return",          # useless-return
   "unnecessary-return-none", # unnecessary-return-none
   "missing-todo-author",     # missing-todo-author
@@ -50,7 +48,7 @@ select = [
   "C4",   # flake8-comprehensions
   "C90",  # mccabe
   "COM",  # flake8-commas
-  "DTZ",  # flake8-datetimez
+  "DTZ",  # flake8-datetime
   "EM",   # flake8-errmsg
   "ERA",  # eradicate
   "F",    # pyflakes

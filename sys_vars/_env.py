@@ -1,7 +1,7 @@
 __all__ = ["dot_env", "has_dot_env"]
 
 
-def _fallback(*args, **kwargs) -> dict:  # ruff: ignore[unused-function-argument]
+def _fallback(*args, **kwargs) -> dict[str, str | None]:  # ruff: ignore[unused-function-argument]
     """If python-dotenv is not installed, provide a noop method."""
     return {}
 

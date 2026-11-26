@@ -29,7 +29,7 @@ except KeyError:
     raise KeyError(msg) from None
 
 # Load the contents of a .env file. It's OK if it doesn't exist
-__DOT_ENV_CONTENT: dict[str, str | None] = dot_env(__SYS_VARS_PATH / ".env")
+__DOT_ENV_CONTENT = dot_env(__SYS_VARS_PATH / ".env")
 
 
 def __from_directory(key: str, /) -> str | None:
@@ -54,11 +54,14 @@ class SysVars:
     """Access system variables in your code as native Python data types."""
 
     def __init__(self, path: Path | None = None, /) -> None:
+        """TODO: write me!"""
         __sys_vars_path: Path | None = path
-        # __variables: dict[str, Any] = {}
+        __known_vars: dict[str, Any] = {}
         self.set_path(path)
 
     def reload(self) -> None:
+        """TODO: write me!"""
+        self.__known_vars.clear()
         return None
 
     def set_path(self, p: Path | None = None, /) -> None:
@@ -76,7 +79,7 @@ class SysVars:
             raise KeyError(msg) from None
         return None
 
-    def get(self) -> str:
+    def get(self, key: str, /, *, default: Any | None = None, __var_type: str = "str") -> str:
         """Get a system variable value as a str type.
 
         Check the value of `SYS_VARS_PATH` and `os.environ` for the key, preferring values
