@@ -9,17 +9,7 @@ from ._env import dot_env
 from .exceptions import SysVarNotFoundError
 
 
-__all__ = [
-    "SysVars",
-    "get",
-    "get_bool",
-    "get_datetime",
-    "get_float",
-    "get_int",
-    "get_json",
-    "get_path",
-]
-
+__all__ = ["SysVars"]
 
 # Get the defined sys vars path from the environment
 try:
@@ -51,21 +41,56 @@ def __from_env_file(key: str, /) -> str | None:
 
 
 class SysVars:
-    """Access system variables in your code as native Python data types."""
+    """Access system variables in your code as native Python data types.
 
-    def __init__(self, path: Path | None = None, /) -> None:
+
+    TODO: `.env` support
+    TODO: `.env` data will be loaded at init
+    """
+
+    def __init__(self, p: Path | None = None, /) -> None:
         """TODO: write me!"""
-        __sys_vars_path: Path | None = path
-        __known_vars: dict[str, Any] = {}
-        self.set_path(path)
+        self.__sys_vars_path: Path | None = p
+        self.__known_vars: dict[str, Any] = {}
+        self.set_path(p)
+
+    def _from_directory(self, key: str, /) -> str | None:
+        """Try to find the given variable in the sys vars path."""
+        # In the unlikely event the sys vars path is still a `NoneType`, shortcut
+        if self.__sys_vars_path is None:
+            return None
+        try:
+            return (self.__sys_vars_path / key).read_text().strip() or None
+        except FileNotFoundError:
+            return None
+
+    @staticmethod
+    def _from_env(key: str, /) -> str | None:
+        """Try to get the given variable from the environment."""
+        return environ.get(key)
+
+    def _load_dot_env(self) -> None:
+        """Load the contents of a `.env` file. It's OK if it doesn't exist."""
+        # The sys vars path is very unlikely to be a NoneType at this point, but it is possible,
+        # so handle that edge case
+        vals = {} if self.__sys_vars_path is None else dot_env(self.__sys_vars_path / ".env")
+        self.__known_vars.update(vals)
 
     def reload(self) -> None:
         """TODO: write me!"""
         self.__known_vars.clear()
+        self._load_dot_env()
         return None
 
     def set_path(self, p: Path | None = None, /) -> None:
-        """TODO: write me!"""
+        """Set the source path to use for retrieving variables from a file.
+
+        The path is also used to locate a `.env` file that could contain variables, if `.env`
+        support is available.
+
+        If a specific path is not available, the `SYS_VARS_PATH` environment variable will be used.
+        If that is not set, a `KeyError` exception wil be raised.
+        """
         # If a path is provided, use it
         if p is not None:
             self.__sys_vars_path = p.resolve()
@@ -77,7 +102,6 @@ class SysVars:
         except KeyError:
             msg = "The environment variable 'SYS_VARS_PATH' could not be found."
             raise KeyError(msg) from None
-        return None
 
     def get(self, key: str, /, *, default: Any | None = None, __var_type: str = "str") -> str:
         """Get a system variable value as a str type.
